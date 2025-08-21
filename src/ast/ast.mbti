@@ -1,0 +1,116 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "programming_with_laugh/MiniMoonBit/ast"
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) enum Binding {
+  Ident(String)
+  Wildcard
+}
+impl ToJson for Binding
+
+pub(all) struct ConstrIdent(String)
+fn ConstrIdent::inner(Self) -> String
+impl ToJson for ConstrIdent
+
+pub(all) enum Expr {
+  Lit(Lit)
+  Var(String)
+  Let(Binding, TypeIdent?, Expr, Expr)
+  LetMut(String, TypeIdent, Expr, Expr)
+  LetTuple(Array[Binding], TypeIdent?, Expr, Expr)
+  LetFn(String, Func, Expr)
+  While(Expr, Expr, Expr)
+  Assign(LExpr, Expr, Expr)
+  Return(Expr)
+  If(Expr, Expr, Expr)
+  Match(Expr, Array[(Pattern, Expr)])
+  Unary(Op1, Expr)
+  Infix(Op2, Expr, Expr)
+  Call(Expr, Array[Expr])
+  Bucket(Expr, Expr)
+  Dot(Expr, String)
+  Tuple(Array[Expr])
+  Array(ConstrIdent, Array[Expr])
+  Constr(String, Array[Expr])
+  Struct(TypeIdent, Array[(String, Expr)])
+}
+impl ToJson for Expr
+
+pub(all) struct Func {
+  params : Array[(String, TypeIdent?)]
+  return_type : TypeIdent?
+  body : Expr
+}
+impl ToJson for Func
+
+pub(all) enum LExpr {
+  Ident(String)
+  Dot(LExpr, String)
+  Barket(LExpr, Expr)
+}
+impl ToJson for LExpr
+
+pub(all) enum Lit {
+  Unit
+  Bool(Bool)
+  Int(Int)
+  Float(Double)
+}
+impl ToJson for Lit
+
+pub(all) enum Op1 {
+  Neg
+  Not
+}
+impl ToJson for Op1
+
+pub(all) enum Op2 {
+  Add
+  Sub
+  Mul
+  Div
+  Mod
+  Eq
+  Neq
+  Ge
+  Geq
+  Le
+  Leq
+}
+impl ToJson for Op2
+
+pub(all) enum Pattern {
+  Any
+  Lit(Lit)
+  Var(String)
+  Tuple(Array[Pattern])
+  Constr(TypeIdent?, ConstrIdent, Array[Pattern])
+}
+impl ToJson for Pattern
+
+pub(all) struct Program {
+  top_let : Array[(String, TypeIdent, Expr)]
+  top_fns : Array[(String, Func)]
+  main_fn : Func
+}
+impl ToJson for Program
+
+pub(all) enum TypeDecl {
+  Struct(Array[(String, TypeIdent)])
+  Enum(Array[(ConstrIdent, Array[TypeIdent])])
+}
+impl ToJson for TypeDecl
+
+pub(all) struct TypeIdent(String)
+fn TypeIdent::inner(Self) -> String
+impl ToJson for TypeIdent
+
+// Type aliases
+pub typealias String as Ident
+
+// Traits
+
