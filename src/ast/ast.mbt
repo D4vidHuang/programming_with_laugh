@@ -1,20 +1,21 @@
 ///|
 pub(all) struct Program {
-  top_let : Array[(Ident, TypeIdent, Expr)]
+  type_decls : Array[(TypeIdent, TypeDecl)]
+  top_let : Array[(Ident, Type, Expr)]
   top_fns : Array[(Ident, Func)]
   main_fn : Func
 } derive(ToJson)
 
 ///|
 pub(all) enum TypeDecl {
-  Struct(Array[(Ident, TypeIdent)])
-  Enum(Array[(ConstrIdent, Array[TypeIdent])])
+  Struct(Array[(Ident, Type)])
+  Enum(Array[(ConstrIdent, Array[Type])])
 } derive(ToJson(style="flat"))
 
 ///|
 pub(all) struct Func {
-  params : Array[(Ident, TypeIdent?)]
-  return_type : TypeIdent?
+  params : Array[(Ident, Type?)]
+  return_type : Type?
   body : Expr
 } derive(ToJson)
 
@@ -30,9 +31,9 @@ pub(all) enum Expr {
   Lit(Lit)
   Var(Ident)
   // let
-  Let(Binding, TypeIdent?, Expr, Expr)
-  LetMut(Ident, TypeIdent, Expr, Expr)
-  LetTuple(Array[Binding], TypeIdent?, Expr, Expr)
+  Let(Binding, Type?, Expr, Expr)
+  LetMut(Ident, Type, Expr, Expr)
+  LetTuple(Array[Binding], Type?, Expr, Expr)
   LetFn(Ident, Func, Expr)
   // inst
   While(Expr, Expr, Expr)
@@ -68,4 +69,12 @@ pub(all) enum Pattern {
   Var(Ident)
   Tuple(Array[Pattern])
   Constr(TypeIdent?, ConstrIdent, Array[Pattern])
+} derive(ToJson(style="flat"))
+
+///|
+pub(all) enum Type {
+  Ident(TypeIdent)
+  Generic(TypeIdent, Array[Type])
+  Tuple(Array[Type])
+  Func(Array[Type], Type)
 } derive(ToJson(style="flat"))
