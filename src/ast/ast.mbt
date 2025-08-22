@@ -49,8 +49,8 @@ pub(all) enum Expr {
   Dot(Expr, Ident)
   // construct
   Tuple(Array[Expr])
-  Array(ConstrIdent, Array[Expr])
-  Constr(Ident, Array[Expr])
+  Array(Array[Expr])
+  Constr(TypeIdent?, ConstrIdent, Array[Expr])
   Struct(TypeIdent, Array[(Ident, Expr)])
 } derive(ToJson(style="flat"))
 
