@@ -2,10 +2,10 @@
 pub typealias String as Ident
 
 ///|
-pub(all) struct ConstrIdent(Ident)
+pub(all) struct ConstrIdent(Ident) derive(Eq, Hash)
 
 ///|
-pub(all) struct TypeIdent(Ident)
+pub(all) struct TypeIdent(Ident) derive(Eq, Hash)
 
 ///|
 pub(all) enum Op1 {
@@ -33,5 +33,5 @@ pub(all) enum Lit {
   Unit
   Bool(Bool)
   Int(Int)
-  Float(Double)
+  Double(Double)
 }

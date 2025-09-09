@@ -14,14 +14,16 @@ impl ToJson for Binding
 
 pub(all) struct ConstrIdent(String)
 fn ConstrIdent::inner(Self) -> String
+impl Eq for ConstrIdent
+impl Hash for ConstrIdent
 impl ToJson for ConstrIdent
 
 pub(all) enum Expr {
   Lit(Lit)
   Var(String)
-  Let(Binding, TypeIdent?, Expr, Expr)
-  LetMut(String, TypeIdent, Expr, Expr)
-  LetTuple(Array[Binding], TypeIdent?, Expr, Expr)
+  Let(Binding, TypeExpr?, Expr, Expr)
+  LetMut(String, TypeExpr, Expr, Expr)
+  LetTuple(Array[Binding], TypeExpr?, Expr, Expr)
   LetFn(String, Func, Expr)
   While(Expr, Expr, Expr)
   Assign(LExpr, Expr, Expr)
@@ -34,15 +36,15 @@ pub(all) enum Expr {
   Bucket(Expr, Expr)
   Dot(Expr, String)
   Tuple(Array[Expr])
-  Array(ConstrIdent, Array[Expr])
-  Constr(String, Array[Expr])
+  Array(Array[Expr])
+  Constr(TypeIdent?, ConstrIdent, Array[Expr])
   Struct(TypeIdent, Array[(String, Expr)])
 }
 impl ToJson for Expr
 
 pub(all) struct Func {
-  params : Array[(String, TypeIdent?)]
-  return_type : TypeIdent?
+  params : Array[(String, TypeExpr?)]
+  return_type : TypeExpr?
   body : Expr
 }
 impl ToJson for Func
@@ -58,7 +60,7 @@ pub(all) enum Lit {
   Unit
   Bool(Bool)
   Int(Int)
-  Float(Double)
+  Double(Double)
 }
 impl ToJson for Lit
 
@@ -93,20 +95,39 @@ pub(all) enum Pattern {
 impl ToJson for Pattern
 
 pub(all) struct Program {
-  top_let : Array[(String, TypeIdent, Expr)]
-  top_fns : Array[(String, Func)]
-  main_fn : Func
+  type_decls : Array[(TypeIdent, TypeDecl)]
+  top_lets : Array[(String, TypeExpr, Expr)]
+  top_funcs : Array[TopFunc]
+  main_func : Expr
 }
 impl ToJson for Program
 
+pub(all) struct TopFunc {
+  name : String
+  params : Array[(String, TypeExpr)]
+  return_type : TypeExpr
+  body : Expr
+}
+impl ToJson for TopFunc
+
 pub(all) enum TypeDecl {
-  Struct(Array[(String, TypeIdent)])
-  Enum(Array[(ConstrIdent, Array[TypeIdent])])
+  Struct(Array[(String, TypeExpr)])
+  Enum(Array[(ConstrIdent, Array[TypeExpr])])
 }
 impl ToJson for TypeDecl
 
+pub(all) enum TypeExpr {
+  Ident(TypeIdent)
+  Generic(TypeIdent, Array[TypeExpr])
+  Tuple(Array[TypeExpr])
+  Func(Array[TypeExpr], TypeExpr)
+}
+impl ToJson for TypeExpr
+
 pub(all) struct TypeIdent(String)
 fn TypeIdent::inner(Self) -> String
+impl Eq for TypeIdent
+impl Hash for TypeIdent
 impl ToJson for TypeIdent
 
 // Type aliases
