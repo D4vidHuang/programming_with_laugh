@@ -4,7 +4,7 @@ pub impl ToJson for Lit with to_json(self) {
     Unit => "()"
     Bool(b) => Json::boolean(b)
     Int(i) => Json::number(i.to_double())
-    Float(d) => Json::number(d)
+    Double(d) => Json::number(d)
   }
 }
 
